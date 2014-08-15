@@ -1,2 +1,2 @@
-Kardrobe
-========
+Kardrobe:
+A little project that I did freshman year of college. I scraped various fashion websites and then used associative search technology to group those clothes based on similar descriptions. The UI was such that a user can click a item of clothing that they liked, and the page would reload with other clothing that had a similar description.
