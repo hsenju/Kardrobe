@@ -1,0 +1,318 @@
+<html>
+<head>
+
+<title>KARDROBE</title>
+<script type="text/javascript" language="JavaScript" src="jquery-1.7.2.min.js"></script>
+<style>
+.titleSearch:hover {color: brown;}
+
+.titleSearch {color: black;}
+
+</style>
+</head>
+<body>
+
+<button style = 'font-family:Georgia; font-size:40px;  color:brown; font-style:italic; background:white; border:none;' onClick="default(); return false;">Welcome to Kardrobe</button>
+
+
+<div id="contact_form">  
+<form onsubmit="search(); return false;">  
+  <fieldset style = 'border:none; background:url(http://i813.photobucket.com/albums/zz59/bijal21/Mens%20Print/Blue_Herringbone.jpg)'>  
+<textarea name="search_text" id="search_text" size="30" class="text-input" style="font-family:Georgia; font-variant:small-caps; font-size: 15px; background: grey; border:none; color:white"></textarea>  
+    <label class="error" for="search" id="name_error"></label>   
+<input type="submit" class="button" value="Search" style="font-family:Georgia; font-variant:small-caps; font-size: 15px; background: grey; border:none; color:white"/>  
+</fieldset>
+</form>
+</div>
+
+<div id = style="font-weight:900; font-size:10px; color:grey; font-family:Georgia; font-style:italic"> </div>
+
+<a style="font-weight:900; color:grey; font-family:Georgia; font-style:italic" >Gender:</a>
+
+<button value="Male" style="border:none; color:blue; background:white; font-size: 15px; font-weight:900;  font-family:Georgia; font-variant:small-caps "  onClick="man(); return false; ">MALE</button>
+
+<button value="Female" style="border:none; color: red; background:white; font-size: 15px; font-weight:900; font-family:Georgia; font-variant:small-caps "  onClick="woman(); return false; " >FEMALE</button>
+
+<script type="text/javascript">
+
+var gender = 'm';
+var searchmode = 'a';
+var defaultman = 'Two-Button Navy Blazer'
+var defaultwoman= 'Bree Linen Tunic'
+
+function search (){
+  searchmode='s';
+  var x = $("#search_text").val().toLowerCase();
+  find (x, undefined, 0);
+}
+
+function default2 (){
+  searchmode='a';
+  var name;
+  if (gender=='m'){name = defaultman;}
+  else {name = defaultwoman;}
+  find (undefined, name, 0);
+}
+
+
+$(function(){
+  default2();
+});
+
+function next (x, y, o){
+var p = Number(o) + 25;
+find (x, y, p);
+}
+
+function back (x, y, o){
+var p = Number(o) - 25;
+find (x, y, p);
+}
+
+function woman (){
+gender='w';
+  searchmode='a';
+find (undefined, defaultwoman, 0);
+}
+
+function man (){
+gender='m';
+  searchmode='a';
+find (undefined, defaultman, 0);
+}
+
+function assoc (x, y){
+searchmode = 'a';
+document.getElementById('search_text').value = y;
+find(undefined, y, 0);
+}
+
+function buttonsearch(x){
+document.getElementById('search_text').value = x;
+find(x, undefined, 0);
+};
+
+function CngSize(obj,w){
+ obj.style.width=w+'px';
+}
+
+function find(x, y, o) 
+{
+
+var xmlDoc = document.implementation.createDocument("","", null);
+
+var pi = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\"");
+xmlDoc.appendChild(pi);
+
+var gss=xmlDoc.createElement('gss');
+var title = xmlDoc.createAttribute('gss');
+var version = xmlDoc.createAttribute('version');
+var xmlns= xmlDoc.createAttribute('xmlns');
+version.value = "3.0";
+xmlns.value = "http://gss3.cs.nii.ac.jp/";
+gss.setAttributeNode(version);
+gss.setAttributeNode(xmlns);
+
+xmlDoc.appendChild(gss);
+
+var assoc = xmlDoc.createElement('assoc');
+var title = xmlDoc.createAttribute('assoc');
+var target = xmlDoc.createAttribute('target');
+var niwords = xmlDoc.createAttribute('niwords');
+var cutoffdf = xmlDoc.createAttribute('cutoff-df');
+var narticles = xmlDoc.createAttribute('narticles');
+var nkeywords = xmlDoc.createAttribute('nkeywords');
+var yykn = xmlDoc.createAttribute('yykn');
+var nacls = xmlDoc.createAttribute('nacls');
+var nkcls = xmlDoc.createAttribute('nkcls');
+var aoffset = xmlDoc.createAttribute('a-offset');
+var aprops = xmlDoc.createAttribute('a-props');
+var stage1sim = xmlDoc.createAttribute('stage1-sim');
+var stage2sim = xmlDoc.createAttribute('stage2-sim');
+
+title.value = "assoc";
+if (gender=='m'){target.value = "lacoste";}
+else {target.value = "woman2";}
+niwords.value = "70";
+cutoffdf.value = "10000";
+narticles.value = "25";
+nkeywords.value = "10";
+yykn.value = "10";
+nacls.value = "1";
+nkcls.value = "1";
+aoffset.value = o;
+aprops.value = "title,price,link,imglink,brand";
+stage1sim.value = "WT_SMARTAW";
+stage2sim.value = "WT_SMARTWA";
+
+assoc.setAttributeNode(target);
+assoc.setAttributeNode(niwords);
+assoc.setAttributeNode(cutoffdf);
+assoc.setAttributeNode(narticles);
+assoc.setAttributeNode(nkeywords);
+assoc.setAttributeNode(yykn);
+assoc.setAttributeNode(nacls);
+assoc.setAttributeNode(nkcls);
+assoc.setAttributeNode(aoffset);
+assoc.setAttributeNode(aprops);
+assoc.setAttributeNode(stage1sim);
+assoc.setAttributeNode(stage2sim);
+
+gss.appendChild(assoc);
+
+var xs = new XMLSerializer ();
+var test = xs.serializeToString(xmlDoc);
+
+if (searchmode == 'a'){
+
+var article = xmlDoc.createElement('article');
+var title = xmlDoc.createAttribute('article');
+var name2 = xmlDoc.createAttribute('name');
+ 
+name2.value = y;
+ 
+article.setAttributeNode(name2);
+
+assoc.appendChild(article);
+}
+
+if (searchmode == 's'){
+
+var search = xmlDoc.createElement('search');
+var title = xmlDoc.createAttribute('search');
+var segments = xmlDoc.createAttribute('segments');
+
+segments.value = "0-31";
+
+search.setAttributeNode(segments);
+
+assoc.appendChild(search);
+
+var join = xmlDoc.createElement('join');
+var title = xmlDoc.createAttribute('join');
+var segments = xmlDoc.createAttribute('segments');
+var options = xmlDoc.createAttribute('options');
+
+segments.value = "0";
+options.value = "match-tail";
+
+join.setAttributeNode(segments);
+join.setAttributeNode(options);
+
+search.appendChild(join);
+
+var p = xmlDoc.createElement('p');
+var title = xmlDoc.createAttribute('p');
+
+join.appendChild(p);
+
+p.appendChild(xmlDoc.createTextNode(x));
+}
+
+console.log(new XMLSerializer().serializeToString( gss ))
+
+//var article = xmlDoc.createElement('article');
+//var title = xmlDoc.createAttribute('article');
+//var vec = xmlDoc.createAttribute('vec');
+
+//vec.value = "[[&quot;fine&quot;,1],[&quot;cloudy&quot;,1],[&quot;rainy&quot;,1]]"
+
+//article.setAttributeNode(vec);
+
+//assoc.appendChild(article);
+
+//console.log(article);
+
+$('#similar').empty();
+$('#page-wrap').empty();
+$('#next').empty();
+
+ $.ajax({
+        type: "POST", data: xmlDoc, processData: false, url: "/getassoc/gss3", dataType: "xml", success: function(xml) {
+
+$('<a style="border:none; background:white;  color:brown; font-size:10px; font-variant:small-caps; font-weight:900; font-family:Georgia"></a>').html('Search Associated Terms:').appendTo($('#similar'));
+
+$(xml).find('keyword').each(function(){
+var name = $(this).attr('name');
+
+$('<button style="border:none; background:white;  color:brown; font-size:10px; font-variant:small-caps; font-weight:900; font-family:Georgia" onClick="buttonsearch(\''+name+'\'); return false; " name="button"></button>').html(name).appendTo($('#similar'));
+});
+
+$(xml).find('article').each(function(){
+  var name = $(this).attr('name');
+  var title = $(this).attr('title');
+  var price = $(this).attr('price');
+  var link = $(this).attr('link');
+  var imglink = $(this).attr('imglink');
+var brand = $(this).attr('brand');
+
+  var outer = $('<div style="float: left; border-width: 150px; border-color: white; width: 300px; height:550px " ></div>');
+  $('<button style="border:none; background:white; font-size: 15px; font-weight:900; width:270 px; font-family:Georgia; font-variant:small-caps "  onClick="assoc(\''+name+'\',\''+title+'\'); return false; " ></button>').html(title).addClass("titleSearch").appendTo(outer);
+  $('<a></a>').html('<a href= "'+link+'">'+ '<img  src= "'+imglink+'"\
+ height="400px">'+'</a>').appendTo(outer);
+  $('<button style="border:none; background:white; font-size: 15px; font-weight:900; width:270px; font-family:Georgia; font-variant:small-caps "  onClick="assoc(\''+name+'\',\''+title+'\'\); return false; " ></button>').html(price).appendTo(outer);
+$('<button style="border:none; background:white; font-size: 15px; font-weight:900; width:270px; font-family:Georgia; font-variant:small-caps "  onClick="assoc(\''+name+'\',\''+title+'\'\); return false; " ></button>').html(brand).appendTo(outer);
+  outer.appendTo($('#page-wrap'));
+  outer.clone().appendTo('.goodbye');
+});
+
+console.log (x);
+console.log (y);
+console.log (o);
+
+  var outerb = $('<center style="border-width: 150px; border-color: white; width:100%; "></center>');
+
+
+$(xml).find('articles').each(function(){
+
+  var total = $(this).attr('total');
+
+if (Number(o)>24)
+{
+$('<button style="border:none; background:white; color:brown; font-size:20px; font-variant:small-caps; font-weight:900; font-family:Georgia" onClick="back(\''+x+'\',\''+y+'\',\''+o+'\'); return false; " name="button"></button>').html('BACK').appendTo(outerb);
+}
+
+var pagenumber = Number(o)/25+1;
+
+$('<a style="border:none; background:white; color:grey;  font-size:20px; font-variant:small-caps; font-weight:900; font-family:Georgia"></a>').html('PAGE '+pagenumber).appendTo($(outerb));
+
+
+if (total>(Number(o)+25))
+{
+$('<button style="border:none; background:white; font-size:20px; color:brown; font-variant:small-caps; font-weight:900; font-family:Georgia" onClick="next(\''+x+'\',\''+y+'\',\''+o+'\'); return false; " name="button"></button>').html('NEXT').appendTo(outerb);
+}
+  outerb.appendTo($('#next'));
+
+})
+}
+});
+return false;
+};
+
+</script>
+
+<HR size="5" color="grey">
+
+<div><br/></div>
+
+<div style="font-weight:900; color:grey; font-family:Georgia; font-style:italic" >Click the name to search similar products, Click the picture to visit its webpage:</div>
+
+<div><br/></div>
+
+<div id = "page-wrap">
+</div>
+
+        </div>
+        <div id="LargeImageContainerDiv" style="position: absolute; z-index:2">  
+        </div>
+
+<div><br style="clear: both;" /></div>
+
+<HR size="3" color="grey">
+
+<div id="next" stye="text-align:-moz-center;"></div>
+
+<div style="text-align:center; width:100%">
+<a href="about.html" class="titleSearch" style="text-decoration:none; font-size: 20px; font-weight:900; width:270 px; font-family:Georgia; font-variant:small-caps;">about kardrobe</a></div>
+</div>
+</body>
